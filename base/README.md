@@ -1,28 +1,27 @@
-# USSD Session Streaming Pipeline - Base
+# Telecom Charging CDR (Call Details Recored) Streaming Pipeline
 
-A lightweight Apache Kafka project that simulates real-time USSD session events using a Python producer and consumer. It mimics telecom systems that generate session activity such as USSD dial attempts, service-code requests, and delivery outcomes.
+A lightweight Apache Kafka project that simulates real-time Telecom Charging CDR using a Python producer and consumer. It mimics telecom systems that generate cdrs such as calls/data.
 
 ## Overview
 
 This project contains two independent microservices:
 
-- `producer.py`: generates realistic USSD session events and publishes them to a Kafka topic
-- `consumer.py`: consumes those events and prints them in real time
+- `producer.py`: generates realistic charging cdrs and publishes them to a Kafka topic
+- `consumer.py`: consumes those cdrs and prints them in real time
 
 The producer simulates a telecom network producing events like:
 - mobile numbers
-- service codes such as `#7115#`
+- service type such as `VOICE/DATA/SMS`
 - timestamps
-- delivery status (`SUCCESS`, `FAILED`, `TIMEOUT`)
 
 ## Features
 
 - Realistic event simulation using Egyptian MSISDN examples
-- Real-style USSD service codes
+- Real-style CDRs
 - Weighted status handling:
-  - `SUCCESS`: 92%
-  - `FAILED`: 6%
-  - `TIMEOUT`: 2%
+  - `Call`: 30%
+  - `Data`: 55%
+  - `SMS`: 15%
 - JSON-based payloads for easy downstream integration
 - Simple local Kafka testing setup using Docker
 
@@ -70,12 +69,12 @@ python producer.py
 
 ### Producer
 ```json
-{"session_id":"20127654321020250101143012","dial":"201276543210","timestamp":"2025-01-01 14:30:12.34","service_code":"#7115#","status":"SUCCESS"}
+{"LOCAL_TIME":"2025-01-01 14:30:12","SERVICE_CLASS_ID":"1234","SERVIED_MSISDN":"201201234567","SERVICE_IDENTIFIER_ID":"1","CALLED_NUMBER":"01022345468","CALLING_NUMBER":"201201234567","DURATION":"105","VOLUME":"NULL"}
 ```
 
 ### Consumer
 ```text
-🟢 4 Received session: 20127654321020250101143012 from 201276543210 and it was SUCCESS
+🟢 709 Received CDR: 2026-10-10 14:52:43 from 201214879353
 ```
 
 ## Project Structure
@@ -85,6 +84,9 @@ python producer.py
 ├── producer.py
 ├── consumer.py
 ├── docker-compose.yml
+└── sql/
+    ├── createTable_charging_cdr.sql
+    └── insert_charging_cdr.sql
 ├── README.md
 └── requirements.txt
 ```
