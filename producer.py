@@ -24,20 +24,20 @@ def generate_charging_cdr():
     """
     Generate one simulated telecom charging CDR.
     Service identifiers:
-        0   = Voice
-        121 = Data
-        4   = SMS
+        0 = Voice
+        1 = Data
+        4 = SMS
     Duration: seconds
     Volume: KB
     """
     
     # Example service classes (replace with your actual IDs)
-    service_class_ids = [1061,1062,1063,1063,1065]
+    service_class_ids = [000,111,222,333,444]
 
     timestamp = datetime.now()
 
     # Select the CDR service type
-    service_identifier_id = random.choice([0,121])
+    service_identifier_id = random.choice([0,1])
 
     # Generate an Egyptian mobile number
     def generate_msisdn():
@@ -56,7 +56,7 @@ def generate_charging_cdr():
         called_number = generate_msisdn()
         duration = random.randint(1,1800)
         volume = None
-    elif service_identifier_id == 121: #Data
+    elif service_identifier_id == 1: #Data
         volume = random.randint(1,500_000)
         duration = None
 
